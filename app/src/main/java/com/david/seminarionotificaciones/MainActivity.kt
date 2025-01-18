@@ -113,7 +113,16 @@ fun SeminarioNotificaciones() {
                 }
             }
         ) {
-            Text(text = "Ejercicio 02 - BigPictureStyle")
+            Text(text = "Ejercicio 02 - BigTextStyle")
+        }
+        //ejercicio 3
+        Button(
+            onClick = {
+                val intent = Intent(context, Ej03Activity::class.java)
+                context.startActivity(intent)
+            }
+        ) {
+            Text(text = "Ejercicio 03")
         }
 
 

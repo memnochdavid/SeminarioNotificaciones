@@ -7,7 +7,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -116,5 +118,77 @@ fun createNotificationChannel(context: Context) {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+    }
+}
+
+fun sendNotificationE3(
+    context: Context,
+    channelId: String,
+    notificationId: Int,
+    title: String,
+    text: String,
+    icono: Int,
+    n_botones: Int,
+    lista_nombres: List<String>,
+    selectedImageUri: Uri?
+) {
+    val intent = Intent(context, MainActivity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    }
+    val pendingIntent: PendingIntent = PendingIntent.getActivity(
+        context,
+        notificationId,
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    val builder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(icono)
+        .setLargeIcon(
+            BitmapFactory.decodeResource(
+                context.resources,
+                icono
+            )
+        )
+        .setContentTitle(title)
+        .setContentText(text)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
+    if (selectedImageUri != null) {
+        val bitmap = getBitmapFromUri(context, selectedImageUri)
+        if (bitmap != null) {
+            builder.setStyle(
+                NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap)
+            )
+        }
+    }
+    n_botones.downTo(1).forEach { i ->
+        builder.addAction(
+            icono,
+            lista_nombres[i - 1],
+            pendingIntent
+        )
+    }
+    with(NotificationManagerCompat.from(context)) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        notify(notificationId, builder.build())
+    }
+}
+
+fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
+    return try {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        BitmapFactory.decodeStream(inputStream)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
     }
 }
