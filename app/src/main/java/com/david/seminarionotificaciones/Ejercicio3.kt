@@ -83,6 +83,7 @@ fun FormularioCreaNotificacion() {
 
     ConstraintLayout(
         modifier = Modifier
+            .padding(vertical = 50.dp, horizontal = 30.dp)
             .fillMaxSize()
     ){
         val (titulo_form, texto_form, botones_form, icono_form, enviar,imagen) = createRefs()
@@ -92,6 +93,7 @@ fun FormularioCreaNotificacion() {
             label = { Text("Título") },
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 10.dp)
                 .constrainAs(titulo_form) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -103,6 +105,7 @@ fun FormularioCreaNotificacion() {
             label = { Text("Texto") },
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 10.dp)
                 .constrainAs(texto_form) {
                     top.linkTo(titulo_form.bottom)
                     start.linkTo(parent.start)
@@ -110,10 +113,11 @@ fun FormularioCreaNotificacion() {
         )
         SeleccionaIcono(
             modifier = Modifier
+                .padding(bottom = 10.dp)
                 .constrainAs(icono_form) {
                     top.linkTo(texto_form.bottom)
                     start.linkTo(parent.start)
-                    end.linkTo(imagen.start)
+                    end.linkTo(parent.end)
                 },
             icono = icono,
             lista_iconos = lista_iconos,
@@ -125,29 +129,31 @@ fun FormularioCreaNotificacion() {
                     top.linkTo(icono_form.bottom)
                     start.linkTo(parent.start)
                 },
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceBetween
         ){
             TextField(
                 value = num_botones.toString(),
                 onValueChange = { num_botones = it.toIntOrNull() ?: 0 },
-                label = { Text("Número de botones") },
+                label = { Text("N. botones") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .fillMaxWidth(0.35f)
+                    .padding(bottom = 10.dp)
             )
             TextField(
                 value = lista_nombres,
                 onValueChange = { lista_nombres = it },
-                label = { Text("nombre, nombre") },
+                label = { Text("nom., nom.") },
                 modifier = Modifier
                     .fillMaxWidth(0.65f)
+                    .padding(bottom = 10.dp)
             )
         }
         Button(
             modifier = Modifier
+                .padding(bottom = 10.dp)
                 .constrainAs(imagen) {
-                    top.linkTo(icono_form.top)
-                    start.linkTo(icono_form.end)
+                    top.linkTo(botones_form.bottom)
                     end.linkTo(parent.end)
                 },
             onClick = { launcher.launch("image/*") }
@@ -157,6 +163,7 @@ fun FormularioCreaNotificacion() {
 
         Button(
             modifier = Modifier
+                .padding(bottom = 10.dp)
                 .constrainAs(enviar) {
                     top.linkTo(botones_form.bottom)
                     start.linkTo(parent.start)
@@ -174,6 +181,7 @@ fun FormularioCreaNotificacion() {
         ) {
             Text(text = "Enviar Notificación")
         }
+
     }
 
 
