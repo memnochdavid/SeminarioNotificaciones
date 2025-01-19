@@ -181,11 +181,7 @@ fun FormularioCreaNotificacion() {
         ) {
             Text(text = "Enviar Notificación")
         }
-
     }
-
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
