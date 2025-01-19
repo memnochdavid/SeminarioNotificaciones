@@ -57,4 +57,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.coil)
+    implementation(libs.ui) // Or the latest version
+    implementation(libs.androidx.material) // Or the latest version
+    implementation(libs.ui.tooling.preview)
+    implementation("io.coil-kt:coil-compose:2.4.0")
 }
